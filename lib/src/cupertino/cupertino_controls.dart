@@ -87,40 +87,43 @@ class _CupertinoControlsState extends State<CupertinoControls>
       onHover: (_) => _cancelAndRestartTimer(),
       child: GestureDetector(
         onTap: () => _cancelAndRestartTimer(),
-        child: AbsorbPointer(
-          absorbing: notifier.hideStuff,
-          child: Stack(
-            children: [
-              if (_latestValue.isBuffering)
-                const Center(
-                  child: CircularProgressIndicator(),
-                )
-              else
-                _buildHitArea(),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  _buildTopBar(
-                    backgroundColor,
-                    iconColor,
-                    barHeight,
-                    buttonPadding,
-                  ),
-                  const Spacer(),
-                  if (_subtitleOn)
-                    Transform.translate(
-                      offset: Offset(
-                        0.0,
-                        notifier.hideStuff ? barHeight * 0.8 : 0.0,
-                      ),
-                      child: _buildSubtitles(chewieController.subtitle!),
+        child: Stack(children: [
+          AbsorbPointer(
+            absorbing: notifier.hideStuff,
+            child: Stack(
+              children: [
+                if (_latestValue.isBuffering)
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                else
+                  _buildHitArea(),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    _buildTopBar(
+                      backgroundColor,
+                      iconColor,
+                      barHeight,
+                      buttonPadding,
                     ),
-                  _buildBottomBar(backgroundColor, iconColor, barHeight),
-                ],
-              ),
-            ],
+                    const Spacer(),
+                    if (_subtitleOn)
+                      Transform.translate(
+                        offset: Offset(
+                          0.0,
+                          notifier.hideStuff ? barHeight * 0.8 : 0.0,
+                        ),
+                        child: _buildSubtitles(chewieController.subtitle!),
+                      ),
+                    _buildBottomBar(backgroundColor, iconColor, barHeight),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
+
+        ])
       ),
     );
   }

@@ -78,35 +78,39 @@ class _MaterialControlsState extends State<MaterialControls>
       },
       child: GestureDetector(
         onTap: () => _cancelAndRestartTimer(),
-        child: AbsorbPointer(
-          absorbing: notifier.hideStuff,
-          child: Stack(
-            children: [
-              if (_latestValue.isBuffering)
-                const Center(
-                  child: CircularProgressIndicator(),
-                )
-              else
-                _buildHitArea(),
-              _buildActionBar(),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  if (_subtitleOn)
-                    Transform.translate(
-                      offset: Offset(
-                        0.0,
-                        notifier.hideStuff ? barHeight * 0.8 : 0.0,
-                      ),
-                      child:
+        child: Stack(
+          children: [
+            AbsorbPointer(
+              absorbing: notifier.hideStuff,
+              child: Stack(
+                children: [
+                  if (_latestValue.isBuffering)
+                    const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  else
+                    _buildHitArea(),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      if (_subtitleOn)
+                        Transform.translate(
+                          offset: Offset(
+                            0.0,
+                            notifier.hideStuff ? barHeight * 0.8 : 0.0,
+                          ),
+                          child:
                           _buildSubtitles(context, chewieController.subtitle!),
-                    ),
-                  _buildBottomBar(context),
+                        ),
+                      _buildBottomBar(context),
+                    ],
+                  ),
                 ],
               ),
-            ],
-          ),
-        ),
+            ),
+            _buildActionBar(),
+          ]
+        )
       ),
     );
   }
@@ -140,19 +144,15 @@ class _MaterialControlsState extends State<MaterialControls>
 
   Widget _buildActionBar() {
     return Positioned(
-      top: 0,
-      right: 0,
+      top: 20,
+      right: 10,
       child: SafeArea(
-        child: AnimatedOpacity(
-          opacity: notifier.hideStuff ? 0.0 : 1.0,
-          duration: const Duration(milliseconds: 250),
-          child: Row(
+        child: Row(
             children: [
               _buildSubtitleToggle(),
               if (chewieController.showOptions) _buildOptionsButton(),
             ],
           ),
-        ),
       ),
     );
   }
@@ -175,9 +175,12 @@ class _MaterialControlsState extends State<MaterialControls>
       options.addAll(chewieController.additionalOptions!(context));
     }
 
-    return AnimatedOpacity(
+    return /*AnimatedOpacity(
       opacity: notifier.hideStuff ? 0.0 : 1.0,
       duration: const Duration(milliseconds: 250),
+      child: */CircleAvatar(
+      backgroundColor: Color(0xFF446D8C),
+      radius: 20,
       child: IconButton(
         onPressed: () async {
           _hideTimer?.cancel();
@@ -204,8 +207,9 @@ class _MaterialControlsState extends State<MaterialControls>
         icon: const Icon(
           Icons.more_vert,
           color: Colors.white,
-        ),
+        )
       ),
+      /*),*/
     );
   }
 
